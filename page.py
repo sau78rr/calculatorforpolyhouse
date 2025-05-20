@@ -6,7 +6,7 @@ st.title('Polyhouse Input Page')
 polyhouse_type = st.selectbox('Select type of polyhouse:', ['', 'NVPH', 'NH', 'Fan and Pad'])
 
 if polyhouse_type == 'NVPH':
-    road = st.selectbox('Road Inside:', ['', 'Present', 'Absent'])
+    road = st.selectbox(':', ['', 'Present', 'Absent'])
     bay_size = st.text_input('Bay size:')
     hockey_space = st.text_input('Hockey space:')
     type_of_structure = st.selectbox('Type of structure:', ['', 'Stepper', 'Symmetric'])
