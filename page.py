@@ -13,7 +13,7 @@ if page == "Polyhouse Calculator":
     if polyhouse_type == 'NVPH':
         road = st.selectbox('Road Inside:', ['', 'Present', 'Absent'])
         bay_size = st.text_input('Bay size:')
-        hockey_space = st.text_input('Hockey space:')
+        hockey_space = st.number_input('Hockey space:')
         type_of_structure = st.selectbox('Type of structure:', ['', 'Stepper', 'Symmetric'])
 
         domes_list = []
