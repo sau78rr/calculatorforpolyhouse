@@ -209,7 +209,10 @@ elif page == "Column Calculation":
                         st.success(f"Number of domes: {single_domes}, Length: {single_length}")
                     else:
                         total_domes = sum([d[0] for d in dome_data])
-                        total_columns = sum([d[0]*d[1]/4 for d in dome_data])
+                        # total_columns = sum([d[0]*d[1]/4 for d in dome_data])
+                        total_columns=0
+                        for i in range(len(dome_data)):
+                            total_columns+=dome_data[i][0]*dome_data[i][1]/4    
                         total_columns+=dome_data[len(dome_data)-1][0]*dome_data[len(dome_data)-1][1]/4
                         st.success(f"Total number of domes: {total_domes}, Total columns: {total_columns}")
                 else:
