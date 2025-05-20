@@ -17,6 +17,7 @@ if polyhouse_type == 'NVPH':
     single_steps=0
     # Only show stepper fields if chosen
     if type_of_structure == 'Stepper':
+        isstepper=True
         no_of_steps = st.number_input('Number of steps:', min_value=0, step=1, value=1)
         if no_of_steps == 0:
             single_domes = st.number_input('Enter the number of domes:', min_value=0, step=1, value=0)
