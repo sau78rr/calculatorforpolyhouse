@@ -48,7 +48,7 @@ if page == "Polyhouse Calculator":
                 missing_fields.append("Road")
             if not bay_size.strip():
                 missing_fields.append("Bay size")
-            if not hockey_space.strip():
+            if (hockey_space==0.00):
                 missing_fields.append("Hockey space")
             if type_of_structure == '':
                 missing_fields.append("Type of structure")
@@ -181,7 +181,7 @@ elif page == "Column Calculation":
                 missing_fields.append("Road")
             if not bay_size.strip():
                 missing_fields.append("Bay size")
-            if not hockey_space.strip():
+            if (hockey_space==0.00):
                 missing_fields.append("Hockey space")
             if type_of_structure == '':
                 missing_fields.append("Type of structure")
