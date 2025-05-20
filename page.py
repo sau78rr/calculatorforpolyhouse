@@ -213,7 +213,7 @@ elif page == "Column Calculation":
                         total_columns=0
                         for i in range(len(dome_data)):
                             total_columns+=dome_data[i][0]*dome_data[i][1]/4    
-                        total_columns+=dome_data[len(dome_data)-1][0]*dome_data[len(dome_data)-1][1]/4
+                        total_columns+=dome_data[len(dome_data)-1][1]/4
                         st.success(f"Total number of domes: {total_domes}, Total columns: {total_columns}")
                 else:
                     st.success("All fields are filled! (No calculation for symmetric structure in this example)")
