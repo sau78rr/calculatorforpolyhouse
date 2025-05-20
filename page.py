@@ -18,7 +18,7 @@ if polyhouse_type == 'NVPH':
     if type_of_structure == 'Stepper':
         no_of_steps = st.number_input('Number of steps:', min_value=0, step=1, value=1)
         if no_of_steps == 0:
-            single_domes = st.number_input('Enter the number of domes:', min_value=1, step=1, value=1)
+            single_domes = st.number_input('Enter the number of domes:', min_value=0, step=1, value=0)
         else:
             for i in range(int(no_of_steps)):
                 domes = st.number_input(
