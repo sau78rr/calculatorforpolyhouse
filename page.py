@@ -2,7 +2,7 @@ import streamlit as st
 
 st.title('Polyhouse Input Page')
 
-# Show only polyhouse type selection first
+# Step 1: Polyhouse type selection
 polyhouse_type = st.selectbox('Select type of polyhouse:', ['', 'NVPH', 'NH', 'Fan and Pad'])
 
 if polyhouse_type == 'NVPH':
@@ -11,51 +11,52 @@ if polyhouse_type == 'NVPH':
     hockey_space = st.text_input('Hockey space:')
     type_of_structure = st.selectbox('Type of structure:', ['', 'Stepper', 'Symmetric'])
 
-    domes_list = None
+    domes_list = []
     no_of_steps = None
-    all_inputs_filled = True
-    missing_fields = []
 
+    # Only show stepper fields if chosen
     if type_of_structure == 'Stepper':
-        no_of_steps = st.number_input('Number of steps:', min_value=1, step=1)
-        domes_list = []
+        no_of_steps = st.number_input('Number of steps:', min_value=1, step=1, value=1)
         for i in range(int(no_of_steps)):
-            domes = st.number_input(f'Number of domes for step {i+1}:', min_value=0, step=1, key=f'domes_{i}')
+            domes = st.number_input(
+                f'Number of domes for step {i+1}:',
+                min_value=1,  # Set min_value=1 to require input
+                step=1,
+                key=f'domes_{i}'
+            )
             domes_list.append(domes)
-            if domes == 0:
-                missing_fields.append(f"Number of domes for step {i+1}")
-                all_inputs_filled = False
 
-    # Validation for empty fields
+    # Calculate button and validation
     if st.button("Calculate"):
+        missing_fields = []
+
         if road == '':
             missing_fields.append("Road")
-            all_inputs_filled = False
-        if not bay_size:
+        if not bay_size.strip():
             missing_fields.append("Bay size")
-            all_inputs_filled = False
-        if not hockey_space:
+        if not hockey_space.strip():
             missing_fields.append("Hockey space")
-            all_inputs_filled = False
         if type_of_structure == '':
             missing_fields.append("Type of structure")
-            all_inputs_filled = False
-        if type_of_structure == 'Stepper' and (no_of_steps is None or no_of_steps < 1):
-            missing_fields.append("Number of steps")
-            all_inputs_filled = False
+        if type_of_structure == 'Stepper':
+            if not no_of_steps or no_of_steps < 1:
+                missing_fields.append("Number of steps")
+            for idx, domes in enumerate(domes_list):
+                if domes < 1:
+                    missing_fields.append(f"Number of domes for step {idx+1}")
 
-        if all_inputs_filled:
-            if domes_list:
+        if missing_fields:
+            st.error("Please enter all required fields:\n- " + "\n- ".join(missing_fields))
+        else:
+            # Example calculation
+            if type_of_structure == 'Stepper':
                 total_domes = sum(domes_list)
                 st.success(f"Total number of domes: {total_domes}")
             else:
-                st.info("No domes to calculate.")
-        else:
-            missing_str = ", ".join(missing_fields)
-            st.error(f"Please enter all required fields. Missing: {missing_str}")
+                st.success("All fields are filled! (No calculation for symmetric structure in this example)")
 
 elif polyhouse_type in ['NH', 'Fan and Pad']:
     st.info(f"You selected '{polyhouse_type}'. No further inputs required for this type.")
 
-else:
+elif polyhouse_type == '':
     st.info("Please select the type of polyhouse to proceed.")
