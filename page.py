@@ -7,7 +7,7 @@ page = st.sidebar.selectbox(
 )
 
 if page == "Polyhouse Calculator":
-    # ... your Polyhouse Calculator code (as before) ...
+    # ... your Polyhouse Calculator code (as before) 
     polyhouse_type = st.selectbox('Select type of polyhouse:', ['', 'NVPH', 'Net House', 'Fan and Pad'])
 
     if polyhouse_type == 'NVPH':
