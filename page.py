@@ -209,8 +209,8 @@ elif page == "Column Calculation":
                         st.success(f"Number of domes: {single_domes}, Length: {single_length}")
                     else:
                         total_domes = sum([d[0] for d in dome_data])
-                        total_length = sum([d[1] for d in dome_data])
-                        st.success(f"Total number of domes: {total_domes}, Total length: {total_length}")
+                        total_columns = sum([d[1]/4 for d in dome_data])
+                        st.success(f"Total number of domes: {total_domes}, Total columns: {total_columns}")
                 else:
                     st.success("All fields are filled! (No calculation for symmetric structure in this example)")
 
