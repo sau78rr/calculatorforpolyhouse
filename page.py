@@ -64,7 +64,7 @@ if(page=="Polyhouse Calculator"):
             else:
                 # Example calculation
                 if type_of_structure == 'Stepper':
-                    total_domes = sum(domes_list)
+                    total_domes = sum(domes_list)+single_domes
                     st.success(f"Total number of domes: {total_domes}")
                 else:
                     st.success("All fields are filled! (No calculation for symmetric structure in this example)")
