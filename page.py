@@ -25,4 +25,4 @@ def input_page():
     else:
         return polyhouse_type, None, None, None, None, None, None
 
-# To use this, call input_page() in your Streamlit app.
+input_page()
