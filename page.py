@@ -6,7 +6,7 @@ st.title('Polyhouse Input Page')
 polyhouse_type = st.selectbox('Select type of polyhouse:', ['', 'NVPH', 'NH', 'Fan and Pad'])
 
 if polyhouse_type == 'NVPH':
-    road = st.selectbox('Road:', ['', 'Present', 'Absent'])
+    road = st.selectbox('Road Inside:', ['', 'Present', 'Absent'])
     bay_size = st.text_input('Bay size:')
     hockey_space = st.text_input('Hockey space:')
     type_of_structure = st.selectbox('Type of structure:', ['', 'Stepper', 'Symmetric'])
@@ -16,15 +16,23 @@ if polyhouse_type == 'NVPH':
 
     # Only show stepper fields if chosen
     if type_of_structure == 'Stepper':
-        no_of_steps = st.number_input('Number of steps:', min_value=1, step=1, value=1)
-        for i in range(int(no_of_steps)):
-            domes = st.number_input(
+        no_of_steps = st.number_input('Number of steps:', min_value=0, step=1, value=1)
+        if(no_of_steps==0):
+            domes=st.number_input(
+                f'Enter the number of domes:',min_value=0,step=1,value=1
+            )
+        else:
+            for i in range(int(no_of_steps)):
+                domes = st.number_input(
                 f'Number of domes for step {i+1}:',
                 min_value=1,  # Set min_value=1 to require input
                 step=1,
                 key=f'domes_{i}'
             )
-            domes_list.append(domes)
+                domes_list.append(domes)
+
+        
+        
 
     # Calculate button and validation
     if st.button("Calculate"):
