@@ -5,8 +5,9 @@ page = st.sidebar.selectbox(
     "Choose a page",
     ["Home", "Polyhouse Calculator", "Column Calculation"]
 )
-if(page=="Polyhouse Calculator"):
-    # Step 1: Polyhouse type selection
+
+if page == "Polyhouse Calculator":
+    # ... your Polyhouse Calculator code (as before) ...
     polyhouse_type = st.selectbox('Select type of polyhouse:', ['', 'NVPH', 'Net House', 'Fan and Pad'])
 
     if polyhouse_type == 'NVPH':
@@ -136,90 +137,84 @@ if(page=="Polyhouse Calculator"):
     elif polyhouse_type == '':
         st.info("Please select the type of polyhouse to proceed.")
 
+elif page == "Column Calculation":
+    # Step 1: Polyhouse type selection
+    polyhouse_type = st.selectbox('Select type of polyhouse:', ['', 'NVPH', 'Net House', 'Fan and Pad'])
 
-elif(page=="Column Calculation"):
-    # Sidebar for navigation
-   
-        # Step 1: Polyhouse type selection
-        polyhouse_type = st.selectbox('Select type of polyhouse:', ['', 'NVPH', 'Net House', 'Fan and Pad'])
+    if polyhouse_type == 'NVPH':
+        road = st.selectbox('Road Inside:', ['', 'Present', 'Absent'])
+        bay_size = st.text_input('Bay size:')
+        hockey_space = st.text_input('Hockey space:')
+        type_of_structure = st.selectbox('Type of structure:', ['', 'Stepper', 'Symmetric'])
 
-        if polyhouse_type == 'NVPH':
-            road = st.selectbox('Road Inside:', ['', 'Present', 'Absent'])
-            bay_size = st.text_input('Bay size:')
-            hockey_space = st.text_input('Hockey space:')
-            type_of_structure = st.selectbox('Type of structure:', ['', 'Stepper', 'Symmetric'])
+        dome_data = []  # Will store [number_of_domes, length] for each step
+        no_of_steps = None
+        single_domes = 0
+        single_length = 0.0
 
-            dome_data = []  # Will store [number_of_domes, length] for each step
-            no_of_steps = None
-            single_domes = 0
-            single_length = 0.0
+        if type_of_structure == 'Stepper':
+            no_of_steps = st.number_input('Number of steps:', min_value=0, step=1, value=1)
+            if no_of_steps == 0:
+                single_domes = st.number_input('Enter the number of domes:', min_value=1, step=1, value=1)
+                single_length = st.number_input('Enter the length of dome:', min_value=0.0, step=0.1, value=0.0)
+            else:
+                for i in range(int(no_of_steps)):
+                    domes = st.number_input(
+                        f'Number of domes for step {i+1}:',
+                        min_value=1,
+                        step=1,
+                        key=f'domes_{i}'
+                    )
+                    length = st.number_input(
+                        f'Length of domes for step {i+1}:',
+                        min_value=0.0,
+                        step=0.1,
+                        key=f'length_{i}'
+                    )
+                    dome_data.append([domes, length])
 
+        # Calculate button and validation
+        if st.button("Calculate"):
+            missing_fields = []
+
+            if road == '':
+                missing_fields.append("Road")
+            if not bay_size.strip():
+                missing_fields.append("Bay size")
+            if not hockey_space.strip():
+                missing_fields.append("Hockey space")
+            if type_of_structure == '':
+                missing_fields.append("Type of structure")
             if type_of_structure == 'Stepper':
-                no_of_steps = st.number_input('Number of steps:', min_value=0, step=1, value=1)
-                if no_of_steps == 0:
-                    single_domes = st.number_input('Enter the number of domes:', min_value=1, step=1, value=1)
-                    single_length = st.number_input('Enter the length of dome:', min_value=0.0, step=0.1, value=0.0)
+                if no_of_steps is None:
+                    missing_fields.append("Number of steps")
+                elif no_of_steps == 0:
+                    if single_domes < 1:
+                        missing_fields.append("Number of domes")
+                    if single_length <= 0:
+                        missing_fields.append("Length of dome")
                 else:
-                    for i in range(int(no_of_steps)):
-                        domes = st.number_input(
-                            f'Number of domes for step {i+1}:',
-                            min_value=1,
-                            step=1,
-                            key=f'domes_{i}'
-                        )
-                        length = st.number_input(
-                            f'Length of domes for step {i+1}:',
-                            min_value=0.0,
-                            step=0.1,
-                            key=f'length_{i}'
-                        )
-                        dome_data.append([domes, length])
+                    for idx, (domes, length) in enumerate(dome_data):
+                        if domes < 1:
+                            missing_fields.append(f"Number of domes for step {idx+1}")
+                        if length <= 0:
+                            missing_fields.append(f"Length of domes for step {idx+1}")
 
-            # Calculate button and validation
-            if st.button("Calculate"):
-                missing_fields = []
-
-                if road == '':
-                    missing_fields.append("Road")
-                if not bay_size.strip():
-                    missing_fields.append("Bay size")
-                if not hockey_space.strip():
-                    missing_fields.append("Hockey space")
-                if type_of_structure == '':
-                    missing_fields.append("Type of structure")
+            if missing_fields:
+                st.error("Please enter all required fields:\n- " + "\n- ".join(missing_fields))
+            else:
+                # Example calculation: total domes and lengths
                 if type_of_structure == 'Stepper':
-                    if no_of_steps is None:
-                        missing_fields.append("Number of steps")
-                    elif no_of_steps == 0:
-                        if single_domes < 1:
-                            missing_fields.append("Number of domes")
-                        if single_length <= 0:
-                            missing_fields.append("Length of dome")
+                    if no_of_steps == 0:
+                        st.success(f"Number of domes: {single_domes}, Length: {single_length}")
                     else:
-                        for idx, (domes, length) in enumerate(dome_data):
-                            if domes < 1:
-                                missing_fields.append(f"Number of domes for step {idx+1}")
-                            if length <= 0:
-                                missing_fields.append(f"Length of domes for step {idx+1}")
-
-                if missing_fields:
-                    st.error("Please enter all required fields:\n- " + "\n- ".join(missing_fields))
+                        total_domes = sum([d[0] for d in dome_data])
+                        total_length = sum([d[1] for d in dome_data])
+                        st.success(f"Total number of domes: {total_domes}, Total length: {total_length}")
                 else:
-                    # Example calculation: total domes and lengths
-                    if type_of_structure == 'Stepper':
-                        if no_of_steps == 0:
-                            st.success(f"Number of domes: {single_domes}, Length: {single_length}")
-                        else:
-                            total_domes = sum([d[0] for d in dome_data])
-                            total_length = sum([d[1] for d in dome_data])
-                            st.success(f"Total number of domes: {total_domes}, Total length: {total_length}")
-                    else:
-                        st.success("All fields are filled! (No calculation for symmetric structure in this example)")
+                    st.success("All fields are filled! (No calculation for symmetric structure in this example)")
 
-        # Repeat similar logic for Net House if needed...
+    # Repeat similar logic for Net House if needed...
 
-elif page == "home":
-        st.write("This is to be handled next.")
-
-
-
+elif page == "Home":
+    st.write("This is to be handled next.")
